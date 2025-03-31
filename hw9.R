@@ -20,15 +20,6 @@ dat.precip.long <- data |>
                                    TRUE                 ~ Precipitation))|>
   mutate(Precipitation = as.numeric(Precipitation))
 
-# summarize the data
-ggplot(data=dat.precip.long) +
-  geom_histogram(aes(x=Precipitation, y=after_stat(density)),
-                 breaks=seq(0, 15, 1),
-                 color="grey")+
-  geom_hline(yintercept = 0)+
-  theme_bw() +
-  xlab("Precipitation (Inches)")
-ylab("Density")
 
 # extract data summaries
 library(e1071)
@@ -75,5 +66,3 @@ lognorm.MLEs <- optim(fn = ll.lognorm,
               par = c(0,1),
               data = dat.precip.long$Precipitation,
               neg=T)
-
-
