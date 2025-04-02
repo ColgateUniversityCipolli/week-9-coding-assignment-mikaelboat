@@ -21,18 +21,6 @@ dat.precip.long <- data |>
   mutate(Precipitation = as.numeric(Precipitation))
 
 
-# extract data summaries
-library(e1071)
-data.summaries <- dat.precip.long |>
-  summarize(
-    mean = mean(Precipitation, na.rm=T),
-    sd = sd(Precipitation, na.rm=T),
-    min = min(Precipitation, na.rm=T),
-    max = max(Precipitation, na.rm=T),
-    skew = skewness(Precipitation, na.rm=T),
-    kurt = kurtosis(Precipitation, na.rm=T)
-  )
-
 #####################################
 # Maximum likelihood (Gamma)
 #####################################
@@ -40,7 +28,7 @@ llgamma <- function(par, data, neg=F){
   alpha <- par[1]
   beta <- par[2]
   
-  loglik <- sum(log(dgamma(x=data, shape=alpha, scale=beta)), na.rm = T)
+  loglik <- sum(log(dgamma(x=data, shape=alpha, scale = beta)), na.rm = T)
   
   return(ifelse(neg, -loglik, loglik))
 }

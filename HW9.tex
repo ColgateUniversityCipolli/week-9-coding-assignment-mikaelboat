@@ -104,14 +104,14 @@ which \texttt{R} cannot differentiate from 0.
 \begin{alltt}
 \hldef{log.lik.weib} \hlkwb{<-} \hlopt{-}\hlnum{2166.496}
 \hldef{log.lik.gamma} \hlkwb{<-} \hlopt{-}\hlnum{2151.149}
-\hldef{(q} \hlkwb{<-} \hldef{log.lik.weib} \hlopt{/} \hldef{log.lik.gamma)}
+\hldef{(q} \hlkwb{<-} \hlkwd{exp}\hldef{(log.lik.weib} \hlopt{-} \hldef{log.lik.gamma))}
 \end{alltt}
 \begin{verbatim}
-## [1] 1.007134
+## [1] 2.162134e-07
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-  Since likelihood ratio $Q > 1$, the Weibull distribution has a better fit for our data. 
+  Since likelihood ratio, $Q < 1$, the Gamma distribution has a better fit for our data. 
   
     \item Compute the likelihood ratio to compare the Weibull and the Log-Normal distribution.
     Which has a better fit according to the likelihood ratio?
@@ -121,28 +121,28 @@ which \texttt{R} cannot differentiate from 0.
 \begin{alltt}
 \hldef{log.lik.weib} \hlkwb{<-} \hlopt{-}\hlnum{2166.496}
 \hldef{log.lik.lognorm} \hlkwb{<-} \hlopt{-}\hlnum{2204.201}
-\hldef{(q} \hlkwb{<-} \hldef{log.lik.weib} \hlopt{/} \hldef{log.lik.lognorm)}
+\hldef{(q} \hlkwb{<-} \hlkwd{exp}\hldef{(log.lik.weib} \hlopt{-} \hldef{log.lik.lognorm))}
 \end{alltt}
 \begin{verbatim}
-## [1] 0.982894
+## [1] 2.371775e+16
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-  Since likelihood ratio $Q < 1$, the Log-Normal distribution has a better fit for our data. 
+  Since likelihood ratio $Q > 1$, the Weibull distribution has a better fit for our data. 
     \item Compute the likelihood ratio to compare the Gamma and the Log-Normal distribution.
     Which has a better fit according to the likelhiood ratio?
     \[Q = \frac{L(\{\hat{\alpha}, \hat{\beta}\}|\mathbf{x})}{L(\{\hat{\mu}, \hat{\sigma}\}|\mathbf{x})}=e^{\left[\mathcal{L}(\{\hat{\alpha}, \hat{\beta}\}|\mathbf{x}) - \mathcal{L}(\{\hat{\mu}, \hat{\sigma}\}|\mathbf{x})\right]}\]
 \begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hldef{(q} \hlkwb{<-} \hldef{log.lik.gamma} \hlopt{/} \hldef{log.lik.lognorm)}
+\hldef{(q} \hlkwb{<-} \hlkwd{exp}\hldef{(log.lik.gamma} \hlopt{-} \hldef{log.lik.lognorm))}
 \end{alltt}
 \begin{verbatim}
-## [1] 0.9759314
+## [1] 1.09696e+23
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-  Since likelihood ratio $Q < 1$, the Log-Normal distribution has a better fit for our data. 
+  Since likelihood ratio $Q > 1$, the Gamma distribution has a better fit for our data. 
     
   \end{enumerate}
   \item Optional Coding Challenge. Choose the ``best" distribution and refit the

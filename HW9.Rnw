@@ -54,9 +54,9 @@ which \texttt{R} cannot differentiate from 0.
     <<size = 'scriptsize', eval = T>>=
 log.lik.weib <- -2166.496
 log.lik.gamma <- -2151.149
-(q <- log.lik.weib / log.lik.gamma)
+(q <- exp(log.lik.weib - log.lik.gamma))
 @
-  Since likelihood ratio $Q > 1$, the Weibull distribution has a better fit for our data. 
+  Since likelihood ratio, $Q < 1$, the Gamma distribution has a better fit for our data. 
   
     \item Compute the likelihood ratio to compare the Weibull and the Log-Normal distribution.
     Which has a better fit according to the likelihood ratio?
@@ -64,16 +64,16 @@ log.lik.gamma <- -2151.149
        <<size = 'scriptsize', eval = T>>=
 log.lik.weib <- -2166.496
 log.lik.lognorm <- -2204.201
-(q <- log.lik.weib / log.lik.lognorm)
+(q <- exp(log.lik.weib - log.lik.lognorm))
 @
-  Since likelihood ratio $Q < 1$, the Log-Normal distribution has a better fit for our data. 
+  Since likelihood ratio $Q > 1$, the Weibull distribution has a better fit for our data. 
     \item Compute the likelihood ratio to compare the Gamma and the Log-Normal distribution.
     Which has a better fit according to the likelhiood ratio?
     \[Q = \frac{L(\{\hat{\alpha}, \hat{\beta}\}|\mathbf{x})}{L(\{\hat{\mu}, \hat{\sigma}\}|\mathbf{x})}=e^{\left[\mathcal{L}(\{\hat{\alpha}, \hat{\beta}\}|\mathbf{x}) - \mathcal{L}(\{\hat{\mu}, \hat{\sigma}\}|\mathbf{x})\right]}\]
     <<size = 'scriptsize', eval = T>>=
-(q <- log.lik.gamma / log.lik.lognorm)
+(q <- exp(log.lik.gamma - log.lik.lognorm))
 @
-  Since likelihood ratio $Q < 1$, the Log-Normal distribution has a better fit for our data. 
+  Since likelihood ratio $Q > 1$, the Gamma distribution has a better fit for our data. 
     
   \end{enumerate}
   \item Optional Coding Challenge. Choose the ``best" distribution and refit the
