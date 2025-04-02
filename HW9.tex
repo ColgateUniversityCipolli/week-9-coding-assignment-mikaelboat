@@ -156,6 +156,54 @@ which \texttt{R} cannot differentiate from 0.
     \texttt{chartreuse3} for Spring, \texttt{red3} for Summer, and \texttt{chocolate3}
     for Fall. Note any similarities/differences you observe across the seasons.
   \end{enumerate}
+ 
+ Code for Q1:
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hldef{(tidyverse)}
+\hlkwd{library}\hldef{(nleqslv)}
+\hldef{data} \hlkwb{<-} \hlkwd{read_csv}\hldef{(}\hlsng{"agacis.csv"}\hldef{)}
+\hldef{dat.precip.long} \hlkwb{<-} \hldef{data |>}                    \hlcom{# clean the data}
+\hldef{dplyr}\hlopt{::}\hlkwd{select}\hldef{(}\hlopt{-}\hldef{Annual) |>}                   \hlcom{# Remove annual column }
+\hlkwd{pivot_longer}\hldef{(}\hlkwc{cols} \hldef{=} \hlkwd{c}\hldef{(Jan, Feb, Mar, Apr,}   \hlcom{# pivot the column data into one col}
+                      \hldef{May, Jun, Jul, Aug,}
+                      \hldef{Sep, Oct, Nov, Dec),}
+             \hlkwc{values_to} \hldef{=} \hlsng{"Precipitation"}\hldef{,}   \hlcom{# store the values in Precipitation}
+             \hlkwc{names_to} \hldef{=} \hlsng{"Month"}\hldef{) |>}         \hlcom{# store the months in Month}
+\hlkwd{mutate}\hldef{(}\hlkwc{Precipitation} \hldef{=} \hlkwd{case_when}\hldef{(Precipitation} \hlopt{==} \hlsng{"M"} \hlopt{~} \hlnum{NA_character_}\hldef{,}
+                                 \hlnum{TRUE}                 \hlopt{~} \hldef{Precipitation))|>}
+\hlkwd{mutate}\hldef{(}\hlkwc{Precipitation} \hldef{=} \hlkwd{as.numeric}\hldef{(Precipitation))}
+\hlcom{#####################################}
+\hlcom{# Maximum likelihood (Gamma)}
+\hlcom{#####################################}
+\hldef{llgamma} \hlkwb{<-} \hlkwa{function}\hldef{(}\hlkwc{par}\hldef{,} \hlkwc{data}\hldef{,} \hlkwc{neg}\hldef{=F)\{}
+\hldef{alpha} \hlkwb{<-} \hldef{par[}\hlnum{1}\hldef{]}
+\hldef{beta} \hlkwb{<-} \hldef{par[}\hlnum{2}\hldef{]}
+\hldef{loglik} \hlkwb{<-} \hlkwd{sum}\hldef{(}\hlkwd{log}\hldef{(}\hlkwd{dgamma}\hldef{(}\hlkwc{x}\hldef{=data,} \hlkwc{shape}\hldef{=alpha,} \hlkwc{scale} \hldef{= beta)),} \hlkwc{na.rm} \hldef{= T)}
+\hlkwd{return}\hldef{(}\hlkwd{ifelse}\hldef{(neg,} \hlopt{-}\hldef{loglik, loglik))}
+\hldef{\}}
+\hldef{gamma.MLEs} \hlkwb{<-} \hlkwd{optim}\hldef{(}\hlkwc{fn} \hldef{= llgamma,}
+            \hlkwc{par} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{1}\hldef{,}\hlnum{1}\hldef{),}
+            \hlkwc{data} \hldef{= dat.precip.long}\hlopt{$}\hldef{Precipitation,}
+            \hlkwc{neg}\hldef{=T)}
+\hlcom{#####################################}
+\hlcom{# Maximum likelihood (Log Normal)}
+\hlcom{#####################################}
+\hldef{ll.lognorm} \hlkwb{<-} \hlkwa{function}\hldef{(}\hlkwc{par}\hldef{,} \hlkwc{data}\hldef{,} \hlkwc{neg}\hldef{=F)\{}
+\hldef{mu} \hlkwb{<-} \hldef{par[}\hlnum{1}\hldef{]}
+\hldef{sigma} \hlkwb{<-} \hldef{par[}\hlnum{2}\hldef{]}
+\hldef{loglik} \hlkwb{<-} \hlkwd{sum}\hldef{(}\hlkwd{log}\hldef{(}\hlkwd{dlnorm}\hldef{(}\hlkwc{x}\hldef{=data,} \hlkwc{meanlog} \hldef{= mu,} \hlkwc{sdlog} \hldef{= sigma)),} \hlkwc{na.rm} \hldef{= T)}
+\hlkwd{return}\hldef{(}\hlkwd{ifelse}\hldef{(neg,} \hlopt{-}\hldef{loglik, loglik))}
+\hldef{\}}
+\hldef{lognorm.MLEs} \hlkwb{<-} \hlkwd{optim}\hldef{(}\hlkwc{fn} \hldef{= ll.lognorm,}
+            \hlkwc{par} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{0}\hldef{,}\hlnum{1}\hldef{),}
+            \hlkwc{data} \hldef{= dat.precip.long}\hlopt{$}\hldef{Precipitation,}
+            \hlkwc{neg}\hldef{=T)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+  
 \end{enumerate}
 
 \bibliography{bibliography}
